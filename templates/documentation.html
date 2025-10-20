@@ -1,236 +1,129 @@
-<div align="center">
-
-# Odak Projesi
-### Yapay Zeka Destekli Görsel Dikkat Analizi Aracı
-
-</div>
-
-<div align="center">
-
-![Python](https://img.shields.io/badge/Python-3.10-3776AB?style=for-the-badge&logo=python)
-![Flask](https://img.shields.io/badge/Flask-000000?style=for-the-badge&logo=flask&logoColor=white)
-![OpenCV](https://img.shields.io/badge/OpenCV-5C3EE8?style=for-the-badge&logo=opencv&logoColor=white)
-![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
-
-</div>
-
----
-
-Odak Projesi, bir görsel veya video üzerindeki insan dikkatini bilimsel metotlarla modelleyen ve analiz eden bir web uygulamasıdır. Tasarımcıların, pazarlama uzmanlarının ve araştırmacıların, oluşturdukları görsel materyallerin hangi bölgelerinin daha dikkat çekici olduğunu veriye dayalı olarak anlamalarını sağlar.
-
-<br>
-
-## İçindekiler
-1. [Analiz Modülleri ve Sonuçların Yorumlanması](#1-analiz-modülleri-ve-sonuçların-yorumlanması)
-2. [Sistemin Teknik Mimarisi ve İşleyişi](#2-sistemin-teknik-mimarisi-ve-işleyişi)
-3. [Analizlerin Bilimsel Temelleri](#3-analizlerin-bilimsel-temelleri)
-4. [Kurulum ve Çalıştırma](#4-kurulum-ve-çalıştırma)
-5. [Kaynakça ve Referanslar](#5-kaynakça-ve-referanslar)
-6. [Geri Bildirim ve Katkıda Bulunma](#6-geri-bildirim-ve-katkıda-bulunma)
-
----
-
-## 1. Analiz Modülleri ve Sonuçların Yorumlanması
-
-<details open>
-<summary><strong>► Analizlerin detaylı yorum kılavuzunu görmek için buraya tıklayın (varsayılan olarak açık)</strong></summary>
-<br>
-
-Uygulamanın sunduğu analizler ve bu sonuçların tasarımlarınızı iyileştirmek için nasıl yorumlanacağı aşağıda açıklanmıştır.
-
-### a. Isı Haritası (Heatmap)
-**Analizin Amacı:** Isı haritası, bir kullanıcının bir görsele ilk baktığında gözünün istemsizce nereye odaklanacağını gösteren bir haritadır. Kırmızı ve sarı "sıcak" bölgeler en çok dikkat çeken alanları, mavi ve yeşil "soğuk" bölgeler ise en az dikkat çeken alanları temsil eder.
-
-**Sonuçların Yorumlanması:**
-* **Olumlu Göstergeler:** Sıcak bölgelerin, logonuz, ana başlığınız, ürün görseliniz veya "Satın Al" gibi önemli bir buton üzerinde yoğunlaşması, tasarımınızın mesajını başarıyla ilettiğini gösterir. Web siteleri için, sıcak bölgelerin Nielsen Norman Group tarafından tanımlanan "F-Şeklinde Tarama Deseni" ile uyumlu olması (sayfanın sol üst ve orta kısımlarında yoğunlaşması) genellikle olumlu bir işarettir.
-* **İyileştirme Alanları:** Sıcak bölgelerin alakasız bir stok fotoğraf, dekoratif bir element veya önemsiz bir metin üzerinde yoğunlaşması, kullanıcının dikkatinin dağıldığına ve ana mesajınızın gözden kaçtığına işarettir. Kritik elementlerin "soğuk" bölgelerde kalması, tasarım hiyerarşisinin gözden geçirilmesi gerektiğini belirtir.
-
-### b. Bakış Rotası (Gaze Plot)
-**Analizin Amacı:** Bu simülasyon, bir kullanıcının gözünün görsel üzerindeki en dikkat çekici noktalar arasında hangi sırayla gezinebileceğini tahmin eder. Rota, en dikkat çekici noktadan (1) başlar ve azalan dikkat sırasına göre devam eder.
-
-**Sonuçların Yorumlanması:**
-* **Olumlu Göstergeler:** Rotanın mantıksal bir "görsel hikaye" anlatmasıdır. Örneğin, rota sırasıyla "1. Başlık -> 2. Ürün Görseli -> 3. Buton" gibi bir akışı takip ediyorsa, tasarımınızın yönlendirmesi başarılıdır.
-* **İyileştirme Alanları:** Rotanın kaotik olması, önemli elementleri atlaması veya alakasız yerler arasında gidip gelmesi, tasarımınızda görsel bir hiyerarşi ve gruplama sorunu olduğunu gösterir.
-
-### c. CTA Tespiti ve Skorlaması
-**Analizin Amacı:** Algoritma, görselinizdeki "Satın Al", "İncele", "Başvur" gibi eyleme çağrı (CTA) butonlarını bulur ve bu butonların genel dikkat çekme potansiyelini 0-100 arasında puanlar.
-
-**Sonuçların Yorumlanması:**
-* **Skor > 75 (Çok İyi):** Butonunuz hem metin olarak nettir hem de görsel olarak çok baskındır. Kullanıcıların gözden kaçırma ihtimali çok düşüktür.
-* **Skor 50-74 (İyi):** Butonunuz işlevsel ve bulunabilir ancak daha dikkat çekici hale getirilebilir. Rengini, boyutunu veya konumunu gözden geçirebilirsiniz.
-* **Skor < 50 (Zayıf):** Butonunuz ya görsel olarak çok sönük kalıyor ya da metni bir eylem içermediği için algoritma tarafından zayıf bir aday olarak görülüyor.
-
-</details>
-
----
-
-## 2. Sistemin Teknik Mimarisi ve İşleyişi
-Bu bölüm, uygulamanın arka planında çalışan teknolojileri ve veri akışını mühendislik bakış açısıyla detaylandırmaktadır.
-
-### Teknoloji Yığını
-
-| Kategori | Teknoloji |
-| :--- | :--- |
-| **Backend Framework** | Python 3.10, Flask |
-| **Görüntü İşleme** | OpenCV-Python 4.x |
-| **Optik Karakter Tanıma (OCR)** | Pytesseract |
-| **Veri Görselleştirme** | Matplotlib |
-| **Frontend** | HTML5, CSS3, JavaScript |
-| **Konteynerizasyon**| Docker, Docker Compose |
-
-### Veri Akışı ve Sistem Mimarisi
-Uygulama, stabil ve güvenli bir kullanıcı deneyimi için _Post-Redirect-Get (PRG)_ mimari desenini kullanır.
-
-1.  **Dosya Yükleme (POST):** Kullanıcı bir dosya yüklediğinde, `multipart/form-data` olarak ilgili `/upload_...` endpoint'ine gönderilir. Flask, `werkzeug.utils.secure_filename` ile dosya adını sanitize eder ve dosyayı geçici olarak `/static/uploads` dizinine yazar.
-2.  **Analiz Süreci Tetikleme:**
-    * **Video için:** `process_video` fonksiyonu, videoyu `cv2.VideoCapture` ile okur. Belirli saniye aralıklarıyla (`SAMPLING_INTERVAL_SECONDS`) kareler arasında `cv2.absdiff` ile mutlak fark hesaplar. Bu farkın belirli bir eşik (`CHANGE_THRESHOLD`) değerini geçmesi, o anki karenin "Anahtar Kare" olarak kabul edilmesini sağlar.
-    * **Görsel için:** `perform_analysis` fonksiyonu doğrudan çağrılır.
-3.  **Çekirdek Analiz (perform_analysis):** Her bir resim (veya anahtar kare), bu merkezi fonksiyon içinde sırasıyla `generate_heatmap`, `generate_focus_map`, `generate_gaze_plot` ve `score_button_candidates` alt fonksiyonlarından geçirilir. Her bir fonksiyonun çıktısı (görsel dosyalar), `/static/outputs` dizinine yazılır.
-4.  **Veri Kalıcılığı ve Yönlendirme:** Tüm analiz sonuçları bir Python sözlüğünde toplanır ve Flask'in `session` objesinde saklanır. Ardından, sunucu `redirect(url_for('...'))` ile kullanıcıyı sonuçların gösterileceği yeni bir URL'e yönlendirir.
-5.  **Sonuçların Gösterimi (GET):** Kullanıcının tarayıcısı bu yeni URL'e standart bir `GET` isteği yapar. İlgili Flask rotası, `session`'dan sonuç verilerini çeker ve `render_template` ile HTML sayfasını dinamik olarak oluşturarak kullanıcıya sunar.
-
----
-
-## 3. Analizlerin Bilimsel Temelleri
-* **Isı Haritası (Saliency):** Bu modül, insan görsel sisteminin "aşağıdan yukarıya dikkat" (bottom-up attention) mekanizmasını modeller. Temelleri, **Itti, Koch ve Niebur (1998)** tarafından geliştirilen "Saliency-Based Visual Attention" modeline dayanır.
-* **Bakış Rotası (Gaze Plot):** İnsan gözünün "sakkad" (hızlı sıçramalar) ve "fiksasyon" (kısa duraklamalar) hareketlerini simüle eder.
-* **CTA Tespiti:** Tasarımcı Don Norman'ın **"Olanaklılık" (Affordance)** kavramına dayanır. Bir elementin tasarımı, onun nasıl kullanılacağını ima etmelidir.
-
----
-
-## 4. Kurulum ve Çalıştırma
-Projeyi çalıştırmak için sisteminizde **Git**, **Docker** ve **Docker Compose** kurulu olmalıdır.
-
-1.  **Projeyi Klonlayın:**
-    ```bash
-    git clone [https://github.com/AhmetKorkmazMe/odak-projesi.git](https://github.com/AhmetKorkmazMe/odak-projesi.git)
-    ```
-2.  **Proje Dizinine Gidin:**
-    ```bash
-    cd odak-projesi
-    ```
-3.  **Uygulamayı Başlatın:**
-    ```bash
-    docker-compose up -d
-    ```
-4.  **Erişim:**
-    Kurulum tamamlandıktan sonra, web uygulamasına `http://localhost` veya `http://sunucu_ip_adresiniz` adresi üzerinden erişebilirsiniz.
-
----
-
-## 5. Kaynakça ve Referanslar
-* Itti, L., Koch, C., & Niebur, E. (1998). *A model of saliency-based visual attention for rapid scene analysis.* IEEE Transactions on Pattern Analysis and Machine Intelligence.
-* Hou, X., & Zhang, L. (2007). *Saliency detection: A spectral residual approach.* IEEE Conference on Computer Vision and Pattern Recognition (CVPR).
-* Nielsen, J. (2006). *F-Shaped Pattern For Reading Web Content.* Nielsen Norman Group.
-* Norman, D. (2013). *The Design of Everyday Things: Revised and Expanded Edition.* Basic Books.
-* Google Tesseract OCR Engine & OpenCV Library.
-
----
-
-## 6. Geri Bildirim ve Katkıda Bulunma
-Proje ile ilgili bir hata bulursanız, bir öneriniz varsa veya bir soru sormak isterseniz, lütfen **[Issues](https://github.com/AhmetKorkmazMe/odak-projesi/issues)** sekmesini kullanmaktan çekinmeyin. Tüm geri bildirimler değerlidir.
-
-<br>
-
-<details>
-<summary><strong>► Click here for the English Version</strong></summary>
-<br>
-
-# Odak Project: An AI-Powered Visual Attention Analysis Platform
-
-The Odak Project is a web application that models and analyzes human visual attention on an image or video using scientific methods. It enables designers, marketing experts, and researchers to understand, based on data, which parts of their visual materials are more engaging.
-
-## 1. Analysis Modules & Interpretation of Results
-
-The analyses provided by the application and how to interpret these results to improve your designs are explained below.
-
-### a. Heatmap
-Purpose: A heatmap is a map that shows where a user's eye will involuntarily focus when they first look at an image. "Hot" regions in red and yellow represent the most attention-grabbing areas, while "cold" regions in blue and green represent the least.
-
-Interpretation:
-* Positive Indicators: If hot zones are concentrated on your logo, main headline, product image, or a key button like "Buy Now," it indicates that your design successfully conveys its message.
-* Areas for Improvement: If hot zones are focused on an irrelevant stock photo or a decorative element, it's a sign that the user's attention is distracted. If critical elements remain in "cold" zones, the design hierarchy should be reconsidered.
-
-### b. Gaze Plot
-Purpose: This simulation predicts the sequence in which a user's eye might scan across the most salient points on a visual. The route starts from the most attention-grabbing point (1) and proceeds in descending order of attention.
-
-Interpretation:
-* Positive Indicators: The route tells a logical "visual story." For instance, if the path follows a flow like "1. Headline -> 2. Product Image -> 3. Button," your design's guidance is successful.
-* Areas for Improvement: A chaotic path that skips important elements suggests a problem with visual hierarchy and grouping in your design.
-
-### c. CTA Detection and Scoring
-Purpose: The algorithm finds call-to-action (CTA) buttons like "Buy," "Learn More," or "Apply" in your visual and scores their attention-grabbing potential on a scale of 0-100.
-
-Interpretation:
-* Score > 75 (Very Good): Your button is clear both textually and visually dominant.
-* Score 50-74 (Good): Your button is functional but could be made more prominent.
-* Score < 50 (Weak): Your button is either visually subdued or its text doesn't imply an action, making it difficult for users to notice.
-
-## 2. System's Technical Architecture and Operation
-
-This section details the technologies and data flow that power the application from an engineering perspective.
-
-### Technology Stack
-* Backend Framework: Python 3.10, Flask
-* Image Processing: OpenCV-Python 4.x
-* Optical Character Recognition (OCR): Pytesseract
-* Data Visualization: Matplotlib
-* Frontend: HTML5, CSS3, JavaScript
-* Containerization: Docker, Docker Compose
-
-### Data Flow and System Architecture
-The application uses the Post-Redirect-Get (PRG) design pattern for a stable and secure user experience.
-
-1.  File Upload (POST): When a user uploads a file, it is sent as `multipart/form-data` to the relevant `/upload_...` endpoint. Flask sanitizes the filename using `werkzeug.utils.secure_filename` and temporarily writes the file to the `/static/uploads` directory.
-
-2.  Triggering the Analysis Process:
-    * For Videos: The `process_video` function reads the video using `cv2.VideoCapture`. It calculates the absolute difference (`cv2.absdiff`) between frames at specific intervals (`SAMPLING_INTERVAL_SECONDS`). If this difference exceeds a certain threshold (`CHANGE_THRESHOLD`), the current frame is considered a "Key Frame".
-    * For Images: The `perform_analysis` function is called directly.
-
-3.  Core Analysis (perform_analysis): Each image (or key frame) is passed through the `generate_heatmap`, `generate_focus_map`, `generate_gaze_plot`, and `score_button_candidates` sub-functions within this central function. The output of each function (image files) is written to the `/static/outputs` directory.
-
-4.  Data Persistence and Redirection: All analysis results are collected in a Python dictionary and stored in Flask's `session` object. The server then redirects the user to a new URL for displaying the results using `redirect(url_for('...'))`.
-
-5.  Displaying Results (GET): The user's browser makes a standard `GET` request to this new URL. The corresponding Flask route retrieves the result data from the `session` and dynamically renders the HTML page using `render_template`.
-
-## 3. Scientific Foundations of the Analyses
-
-The analysis modules are based on academic principles in computer vision and cognitive psychology.
-
-* Heatmap (Saliency): This module models the "bottom-up attention" mechanism of the human visual system, based on the foundational "Saliency-Based Visual Attention" model by Itti, Koch, and Niebur (1998).
-* Gaze Plot: It simulates the "saccade" (rapid jumps) and "fixation" (short pauses) movements of the human eye by identifying high-density areas in the saliency map.
-* CTA Detection: It is based on Don Norman's concept of "Affordance." The design of an element should imply how it is to be used (e.g., that it is "clickable"). The algorithm identifies this affordance by combining semantic content, visual distinctiveness, and geometric form.
-
-## 4. Installation and Setup
-
-You must have Git, Docker, and Docker Compose installed to run the project.
-
-1.  Clone the Repository:
-    ```bash
-    git clone [https://github.com/AhmetKorkmazMe/odak-projesi.git](https://github.com/AhmetKorkmazMe/odak-projesi.git)
-    ```
-2.  Navigate to the Project Directory:
-    ```bash
-    cd odak-projesi
-    ```
-3.  Launch the Application:
-    ```bash
-    docker-compose up -d
-    ```
-4.  Access:
-    Once complete, access the web application at `http://localhost` or `http://your_server_ip_address`.
-
-## 5. Bibliography and References
-
-The algorithms and methodologies used in this project are based on the following foundational scientific works and technologies.
-
-* Itti, L., Koch, C., & Niebur, E. (1998). *A model of saliency-based visual attention for rapid scene analysis.* IEEE Transactions on Pattern Analysis and Machine Intelligence.
-* Hou, X., & Zhang, L. (2007). *Saliency detection: A spectral residual approach.* IEEE Conference on Computer Vision and Pattern Recognition (CVPR).
-* Nielsen, J. (2006). *F-Shaped Pattern For Reading Web Content.* Nielsen Norman Group.
-* Norman, D. (2013). *The Design of Everyday Things: Revised and Expanded Edition.* Basic Books.
-* Google Tesseract OCR Engine & OpenCV Library.
-
-## 6. Feedback and Contributions
-If you find a bug, have a suggestion, or want to ask a question about the project, please feel free to use the **[Issues](https://github.com/AhmetKorkmazMe/odak-projesi/issues)** tab. All feedback is valuable.
-
-</details>
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8">
+    <title>Teknik Dokümantasyon - Odak Proje</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="container result-page-body">
+
+    <header class="site-header" style="margin-bottom: 1rem; padding-bottom: 1.5rem;">
+        <div class="wrap">
+            <h1 class="brand">Odak Proje</h1>
+            <p class="subtitle">Teknik Dokümantasyon ve Metodoloji</p>
+        </div>
+    </header>
+
+    <main class="wrap">
+        <div class="text-center mb-5">
+            <a href="{{ url_for('index') }}" class="btn-secondary-outline">Ana Sayfaya Dön</a>
+        </div>
+
+        <section class="doc-section">
+            <h2>1. Kullanıcı Kılavuzu ve Sonuçları Yorumlama</h2>
+            <p>Bu bölüm, Odak Projesi'nin sunduğu analizlerin ne anlama geldiğini ve bu sonuçları kendi tasarımlarınızı iyileştirmek için nasıl kullanabileceğinizi basit bir dille açıklar.</p>
+            
+            <h4>a. Isı Haritası (Heatmap)</h4>
+            <p><strong>Bu Analiz Nedir?:</strong> Isı haritası, bir kullanıcının bir görsele ilk baktığında gözünün istemsizce nereye odaklanacağını gösteren bir haritadır. Kırmızı ve sarı "sıcak" bölgeler en çok dikkat çeken alanları, mavi ve yeşil "soğuk" bölgeler ise en az dikkat çeken alanları temsil eder.</p>
+            <p><strong>Sonuçlar Nasıl Yorumlanmalıdır?:</strong>
+                <ul>
+                    <li><strong>Olumlu Göstergeler:</strong> Sıcak bölgelerin, logonuz, ana başlığınız, ürün görseliniz veya "Satın Al" gibi önemli bir buton üzerinde yoğunlaşması, tasarımınızın mesajını başarıyla ilettiğini gösterir. Web siteleri için, sıcak bölgelerin Nielsen Norman Group tarafından tanımlanan <strong>"F-Şeklinde Tarama Deseni"</strong> ile uyumlu olması (sayfanın sol üst ve orta kısımlarında yoğunlaşması) genellikle olumlu bir işarettir.</li>
+                    <li><strong>İyileştirme Alanları:</strong> Sıcak bölgelerin alakasız bir stok fotoğraf, dekoratif bir element veya önemsiz bir metin üzerinde yoğunlaşması, kullanıcının dikkatinin dağıldığına ve ana mesajınızın gözden kaçtığına işarettir. Kritik elementlerin "soğuk" bölgelerde kalması, tasarım hiyerarşisinin gözden geçirilmesi gerektiğini belirtir.</li>
+                </ul>
+            </p>
+
+            <h4>b. Bakış Rotası (Gaze Plot)</h4>
+            <p><strong>Bu Analiz Nedir?:</strong> Bu simülasyon, bir kullanıcının gözünün görsel üzerindeki en dikkat çekici noktalar arasında hangi sırayla gezinebileceğini tahmin eder. Rota, en dikkat çekici noktadan (1) başlar ve azalan dikkat sırasına göre devam eder.</p>
+            <p><strong>Sonuçlar Nasıl Yorumlanmalıdır?:</strong>
+                <ul>
+                    <li><strong>Olumlu Göstergeler:</strong> Rotanın mantıksal bir "görsel hikaye" anlatmasıdır. Örneğin, rota sırasıyla "1. Başlık -> 2. Ürün Görseli -> 3. Buton" gibi bir akışı takip ediyorsa, tasarımınızın yönlendirmesi başarılıdır.</li>
+                    <li><strong>İyileştirme Alanları:</strong> Rotanın kaotik olması, önemli elementleri atlaması (örneğin 1'den 3'e atlarken 2. önemli noktayı es geçmesi) veya alakasız yerler arasında gidip gelmesi, tasarımınızda görsel bir hiyerarşi ve gruplama sorunu olduğunu gösterir.</li>
+                </ul>
+            </p>
+
+            <h4>c. CTA Skoru ve Tespiti</h4>
+            <p><strong>Bu Analiz Nedir?:</strong> Algoritma, görselinizdeki "Satın Al", "İncele", "Başvur" gibi eyleme çağrı butonlarını bulur ve bu butonların genel dikkat çekme potansiyelini 0-100 arasında puanlar.</p>
+            <p><strong>Sonuçlar Nasıl Yorumlanmalıdır?:</strong>
+                <ul>
+                    <li><strong>Skor > 75 (Çok İyi):</strong> Butonunuz hem metin olarak nettir (eylem fiili içerir) hem de görsel olarak (dikkat, kontrast) çok baskındır. Kullanıcıların gözden kaçırma ihtimali çok düşüktür.</li>
+                    <li><strong>Skor 50-74 (İyi):</strong> Butonunuz işlevsel ve bulunabilir ancak daha dikkat çekici hale getirilebilir. Rengini, boyutunu veya konumunu gözden geçirebilirsiniz.</li>
+                    <li><strong>Skor < 50 (Zayıf):</strong> Butonunuz ya görsel olarak çok sönük kalıyor ya da metni bir eylem içermediği için algoritma tarafından zayıf bir aday olarak görülüyor. Kullanıcıların bu butonu fark etmesi veya tıklanabilir olduğunu anlaması zordur.</li>
+                </ul>
+            </p>
+        </section>
+
+        <section class="doc-section">
+            <h2 class="mt-5">2. Sistemin Teknik Mimarisi ve İşleyişi</h2>
+            <p>Bu bölüm, uygulamanın arka planında çalışan teknolojileri ve veri akışını mühendislik bakış açısıyla detaylandırmaktadır.</p>
+
+            <h3>2.1. Teknoloji Yığını</h3>
+            <ul>
+                <li><strong>Backend Framework:</strong> <code>Python 3.10</code>, <code>Flask</code></li>
+                <li><strong>Görüntü İşleme:</strong> <code>OpenCV-Python 4.x</code></li>
+                <li><strong>Optik Karakter Tanıma (OCR):</strong> <code>Pytesseract</code></li>
+                <li><strong>Veri Görselleştirme:</strong> <code>Matplotlib</code></li>
+                <li><strong>Frontend:</strong> <code>HTML5</code>, <code>CSS3</code>, <code>JavaScript</code></li>
+                <li><strong>Konteynerizasyon:</strong> <code>Docker</code>, <code>Docker Compose</code></li>
+            </ul>
+            
+            <h3>2.2. Veri Akışı ve Sistem Mimarisi</h3>
+            <p>Uygulama, stabil ve güvenli bir kullanıcı deneyimi için <strong>Post-Redirect-Get (PRG)</strong> mimari desenini kullanır.</p>
+            <ol>
+                <li><strong>Dosya Yükleme (<code>POST</code>):</strong> Kullanıcı bir dosya yüklediğinde, <code>multipart/form-data</code> olarak ilgili <code>/upload_...</code> endpoint'ine gönderilir. Flask, <code>werkzeug.utils.secure_filename</code> ile dosya adını sanitize eder ve dosyayı geçici olarak <code>/static/uploads</code> dizinine yazar.</li>
+                <li><strong>Analiz Süreci Tetikleme:</strong>
+                    <ul><li><strong>Video için:</strong> <code>process_video</code> fonksiyonu, videoyu <code>cv2.VideoCapture</code> ile okur. Belirli saniye aralıklarıyla (`SAMPLING_INTERVAL_SECONDS`) kareler arasında <code>cv2.absdiff</code> ile mutlak fark hesaplar. Bu farkın belirli bir eşik (`CHANGE_THRESHOLD`) değerini geçmesi, o anki karenin "Anahtar Kare" olarak kabul edilmesini sağlar.</li>
+                    <li><strong>Görsel için:</strong> <code>perform_analysis</code> fonksiyonu doğrudan çağrılır.</li></ul>
+                </li>
+                <li><strong>Çekirdek Analiz (<code>perform_analysis</code>):</strong> Her bir resim (veya anahtar kare), bu merkezi fonksiyon içinde sırasıyla <code>generate_heatmap</code>, <code>generate_focus_map</code>, <code>generate_gaze_plot</code> ve <code>score_button_candidates</code> alt fonksiyonlarından geçirilir. Her bir fonksiyonun çıktısı (görsel dosyalar), <code>/static/outputs</code> dizinine yazılır.</li>
+                <li><strong>Veri Kalıcılığı ve Yönlendirme:</strong> Tüm analiz sonuçları bir Python sözlüğünde toplanır ve Flask'in <strong><code>session</code></strong> objesinde saklanır. Ardından, sunucu <code>redirect(url_for('...'))</code> ile kullanıcıyı sonuçların gösterileceği yeni bir URL'e yönlendirir.</li>
+                <li><strong>Sonuçların Gösterimi (<code>GET</code>):</strong> Kullanıcının tarayıcısı bu yeni URL'e standart bir <code>GET</code> isteği yapar. İlgili Flask rotası, <code>session</code>'dan sonuç verilerini çeker ve <code>render_template</code> ile HTML sayfasını dinamik olarak oluşturarak kullanıcıya sunar.</li>
+            </ol>
+        </section>
+
+        <section class="doc-section">
+            <h2 class="mt-5">3. Analizlerin Bilimsel Temelleri ve Kazanımlar</h2>
+            <p>Bu bölüm, analiz modüllerinin dayandığı akademik prensipleri ve pazarlama alanındaki önemini açıklar.</p>
+
+            <h4>a. Isı Haritası (Saliency)</h4>
+            <p><strong>Bilimsel Arka Plan:</strong> Isı haritası, insan görsel sisteminin <strong>"aşağıdan yukarıya dikkat" (bottom-up attention)</strong> mekanizmasını modellemeye çalışır. Bu, kullanıcının hedeflerinden bağımsız olarak, görselin kendi içsel özelliklerinin (renk, kontrast, yönelim) istemsizce dikkati nasıl çektiği prensibine dayanır. Temelleri, alanda çığır açan <strong>Itti, Koch ve Niebur (1998)</strong> tarafından geliştirilen "Saliency-Based Visual Attention" modeline dayanmaktadır.</p>
+            <p><strong>Pazarlama Açısından Önemi:</strong> Isı haritası, "Banner Körlüğü" (kullanıcıların reklamları bilinçsizce görmezden gelmesi) gibi olguları tespit etmenizi sağlar. Tasarımınızdaki görsel hiyerarşiyi ortaya çıkararak, en önemli mesajınızın mı yoksa alakasız bir görselin mi dikkat çektiğini veriye dayalı olarak gösterir.</p>
+
+            <h4>b. Bakış Rotası (Gaze Plot)</h4>
+            <p><strong>Bilimsel Arka Plan:</strong> İnsan gözü, bir sahneyi tararken "sakkad" (hızlı sıçramalar) ve "fiksasyon" (kısa duraklamalar) yapar. Algoritmamız, dikkat haritasındaki en yoğun bölgeleri bularak bu fiksasyon noktalarını tahmin eder ve <strong>"Geri Dönüşün Engellenmesi" (Inhibition of Return - IoR)</strong> prensibini simüle ederek bu noktalar arasında mantıksal bir rota çizer.</p>
+            <p><strong>Pazarlama Açısından Önemi:</strong> Bakış Rotası, bir tasarımın "görsel anlatısını" deşifre eder. Kullanıcının bilgi akışını istediğiniz sırayla (örneğin: Başlık -> Ürün -> Buton) takip edip edemediğini gösterir. Kaotik bir rota, tasarımınızın yönlendirmesinin zayıf olduğuna işarettir.</p>
+            
+            <h4>c. CTA Tespiti ve Yorumlama</h4>
+            <p><strong>Bilimsel Arka Plan:</strong> Bu modül, tasarımcı Don Norman'ın "Olanaklılık" (<strong>Affordance</strong>) kavramına dayanır. Bir elementin tasarımı, onun nasıl kullanılacağını (örneğin "tıklanabilir" olduğunu) ima etmelidir. Algoritmamız bu olanağı, <strong>anlamsal içerik</strong> (eylem bildiren metin), <strong>görsel ayırt edicilik</strong> (kontrast, şekil) ve <strong>geometrik form</strong> gibi birden çok özelliği birleştirerek tespit etmeye çalışır.</p>
+            <p><strong>Uzman Yorum Sistemi:</strong> Bu projede, analiz sonuçları bir yapay zeka dil modeline gönderilmez. Bunun yerine, her bir analiz metriği için ("Görünürlük", "Odaklanma", vb.) ve her bir skor aralığı için ("Çok İyi", "İyi", "Orta", "Zayıf") önceden hazırlanmış, uzman bakış açısını yansıtan <strong>kural tabanlı yorumlar</strong> kullanılır. Bu, hem son derece hızlı sonuçlar alınmasını sağlar hem de her seferinde tutarlı ve eyleme geçirilebilir öneriler sunulmasını garanti eder.</p>
+
+            <h3>Elde Edeceğiniz Kazanımlar</h3>
+            <ul>
+                <li><strong>Veriye Dayalı Tasarım Kararları:</strong> "Bu renk dikkat çeker mi?" gibi sübjektif sorular yerine, tasarımlarınızın hangi bölgelerinin bilimsel olarak daha dikkat çekici olduğunu görerek objektif kararlar alın.</li>
+                <li><strong>Dönüşüm Oranlarını Artırma:</strong> Eyleme çağrı (CTA) butonlarınızın ne kadar fark edilebilir olduğunu ölçerek optimizasyon yapın ve tıklanma oranlarını artırın.</li>
+                <li><strong>Geliştirilmiş Kullanıcı Deneyimi (UX):</strong> Kullanıcıların bir arayüzde bilgiye ne kadar kolay ulaştığını Bakış Rotası analizi ile test ederek daha sezgisel tasarımlar oluşturun.</li>
+            </ul>
+
+            <h2 class="mt-5">4. Kaynakça</h2>
+            <p>Bu projede kullanılan algoritmalar ve metodolojiler, aşağıda listelenen temel bilimsel çalışmalara ve teknolojilere dayanmaktadır.</p>
+            <ul>
+                <li>Itti, L., Koch, C., & Niebur, E. (1998). <strong>A model of saliency-based visual attention for rapid scene analysis.</strong> <em>IEEE Transactions on Pattern Analysis and Machine Intelligence.</em></li>
+                <li>Hou, X., & Zhang, L. (2007). <strong>Saliency detection: A spectral residual approach.</strong> <em>IEEE Conference on Computer Vision and Pattern Recognition (CVPR).</em></li>
+                <li>Nielsen, J. (2006). <strong>F-Shaped Pattern For Reading Web Content.</strong> <em>Nielsen Norman Group.</em></li>
+                <li>Norman, D. (2013). <strong>The Design of Everyday Things: Revised and Expanded Edition.</strong> <em>Basic Books.</em></li>
+                <li><strong>Google Tesseract OCR Engine:</strong> <a href="https://github.com/tesseract-ocr/tesseract" target="_blank" rel="noopener noreferrer">Official GitHub Repository</a></li>
+                <li><strong>OpenCV (Open Source Computer Vision Library):</strong> <a href="https://opencv.org/" target="_blank" rel="noopener noreferrer">Official Website</a></li>
+            </ul>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="wrap">
+            <p>
+                Geliştirici: <a href="https://ahmetkorkmaz.me" target="_blank" rel="noopener noreferrer">Ahmet Korkmaz</a> | 
+                <a href="{{ url_for('documentation') }}">Teknik Dokümantasyon</a>
+            </p>
+        </div>
+    </footer>
+</body>
+</html>
