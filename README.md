@@ -1,4 +1,4 @@
-# Odak Projesi: Yapay Zeka Destekli Görsel Dikkat Analizi Platformu
+# Odak Projesi: Yapay Zeka Destekli Görsel Dikkat Analizi Aracı
 
 Odak Projesi, bir görsel veya video üzerindeki insan dikkatini bilimsel metotlarla modelleyen ve analiz eden bir web uygulamasıdır. Tasarımcıların, pazarlama uzmanlarının ve araştırmacıların, oluşturdukları görsel materyallerin hangi bölgelerinin daha dikkat çekici olduğunu veriye dayalı olarak anlamalarını sağlar.
 
@@ -30,7 +30,7 @@ Sonuçların Yorumlanması:
 
 ## 2. Sistemin Teknik Mimarisi ve İşleyişi
 
-Uygulama, arka planda belirli teknolojiler ve bir veri akış mimarisi ile çalışmaktadır.
+Bu bölüm, uygulamanın arka planında çalışan teknolojileri ve veri akışını mühendislik bakış açısıyla detaylandırmaktadır.
 
 ### Teknoloji Yığını
 * Backend Framework: Python 3.10, Flask
@@ -43,19 +43,25 @@ Uygulama, arka planda belirli teknolojiler ve bir veri akış mimarisi ile çal�
 ### Veri Akışı ve Sistem Mimarisi
 Uygulama, stabil ve güvenli bir kullanıcı deneyimi için Post-Redirect-Get (PRG) mimari desenini kullanır.
 
-1.  Dosya Yükleme (POST): Kullanıcı bir dosya yüklediğinde, `multipart/form-data` olarak ilgili endpoint'e gönderilir. Flask, `werkzeug.utils.secure_filename` ile dosya adını güvenli hale getirir ve dosyayı geçici bir dizine yazar.
-2.  Analiz Süreci Tetikleme: Yüklenen dosyanın türüne göre (görsel veya video) ilgili analiz fonksiyonları çağrılır. Videolar için, kareler arasındaki farklar hesaplanarak "Anahtar Kareler" belirlenir ve bu kareler analiz edilir.
-3.  Çekirdek Analiz: Her bir resim (veya anahtar kare), bu merkezi fonksiyon içinde sırasıyla ısı haritası, odak haritası, bakış rotası ve CTA skoru üreten alt fonksiyonlardan geçirilir.
-4.  Veri Kalıcılığı ve Yönlendirme: Tüm analiz sonuçları bir Python sözlüğünde toplanır ve Flask'in `session` objesinde saklanır. Ardından sunucu, kullanıcıyı sonuçların gösterileceği yeni bir URL'e yönlendirir.
+1.  Dosya Yükleme (POST): Kullanıcı bir dosya yüklediğinde, `multipart/form-data` olarak ilgili `/upload_...` endpoint'ine gönderilir. Flask, `werkzeug.utils.secure_filename` ile dosya adını sanitize eder ve dosyayı geçici olarak `/static/uploads` dizinine yazar.
+
+2.  Analiz Süreci Tetikleme:
+    * Video için: `process_video` fonksiyonu, videoyu `cv2.VideoCapture` ile okur. Belirli saniye aralıklarıyla (`SAMPLING_INTERVAL_SECONDS`) kareler arasında `cv2.absdiff` ile mutlak fark hesaplar. Bu farkın belirli bir eşik (`CHANGE_THRESHOLD`) değerini geçmesi, o anki karenin "Anahtar Kare" olarak kabul edilmesini sağlar.
+    * Görsel için: `perform_analysis` fonksiyonu doğrudan çağrılır.
+
+3.  Çekirdek Analiz (perform_analysis): Her bir resim (veya anahtar kare), bu merkezi fonksiyon içinde sırasıyla `generate_heatmap`, `generate_focus_map`, `generate_gaze_plot` ve `score_button_candidates` alt fonksiyonlarından geçirilir. Her bir fonksiyonun çıktısı (görsel dosyalar), `/static/outputs` dizinine yazılır.
+
+4.  Veri Kalıcılığı ve Yönlendirme: Tüm analiz sonuçları bir Python sözlüğünde toplanır ve Flask'in `session` objesinde saklanır. Ardından, sunucu `redirect(url_for('...'))` ile kullanıcıyı sonuçların gösterileceği yeni bir URL'e yönlendirir.
+
 5.  Sonuçların Gösterimi (GET): Kullanıcının tarayıcısı bu yeni URL'e standart bir `GET` isteği yapar. İlgili Flask rotası, `session`'dan sonuç verilerini çeker ve `render_template` ile HTML sayfasını dinamik olarak oluşturarak kullanıcıya sunar.
 
 ## 3. Analizlerin Bilimsel Temelleri
 
 Analiz modülleri, bilgisayarlı görü ve bilişsel psikoloji alanlarındaki akademik prensiplere dayanmaktadır.
 
-* Isı Haritası (Saliency): Bu modül, insan görsel sisteminin "aşağıdan yukarıya dikkat" (bottom-up attention) mekanizmasını modeller. Temelleri, **Itti, Koch ve Niebur (1998)** tarafından geliştirilen "Saliency-Based Visual Attention" modeline dayanır.
+* Isı Haritası (Saliency): Bu modül, insan görsel sisteminin "aşağıdan yukarıya dikkat" (bottom-up attention) mekanizmasını modeller. Temelleri, Itti, Koch ve Niebur (1998) tarafından geliştirilen "Saliency-Based Visual Attention" modeline dayanır.
 * Bakış Rotası (Gaze Plot): İnsan gözünün "sakkad" (hızlı sıçramalar) ve "fiksasyon" (kısa duraklamalar) hareketlerini simüle eder. Algoritma, dikkat haritasındaki en yoğun bölgeleri bularak bu fiksasyon noktalarını tahmin eder.
-* CTA Tespiti: Tasarımcı Don Norman'ın **"Olanaklılık" (Affordance)** kavramına dayanır. Bir elementin tasarımının, onun nasıl kullanılacağını (örneğin "tıklanabilir" olduğunu) ima etmesi prensibini kullanır. Algoritma bu olanağı, anlamsal içerik (metin), görsel ayırt edicilik (kontrast) ve geometrik form gibi özellikleri birleştirerek tespit eder.
+* CTA Tespiti: Tasarımcı Don Norman'ın "Olanaklılık" (Affordance) kavramına dayanır. Bir elementin tasarımının, onun nasıl kullanılacağını (örneğin "tıklanabilir" olduğunu) ima etmesi prensibini kullanır. Algoritma bu olanağı, anlamsal içerik (metin), görsel ayırt edicilik (kontrast) ve geometrik form gibi özellikleri birleştirerek tespit eder.
 
 ## 4. Kurulum ve Çalıştırma
 
@@ -76,7 +82,7 @@ Projeyi çalıştırmak için sisteminizde Git, Docker ve Docker Compose kurulu 
 4.  Erişim:
     Kurulum tamamlandıktan sonra, web uygulamasına tarayıcınızdan `http://localhost` veya `http://sunucu_ip_adresiniz` adresi üzerinden erişebilirsiniz.
 
-## 5. Kaynakça
+## 5. Kaynakça ve Referanslar
 
 Bu projede kullanılan algoritmalar ve metodolojiler, aşağıdaki temel bilimsel çalışmalara ve teknolojilere dayanmaktadır.
 
@@ -122,7 +128,7 @@ Interpretation:
 
 ## 2. System's Technical Architecture and Operation
 
-The application operates with specific technologies and a data flow architecture in the background.
+This section details the technologies and data flow that power the application from an engineering perspective.
 
 ### Technology Stack
 * Backend Framework: Python 3.10, Flask
@@ -135,19 +141,25 @@ The application operates with specific technologies and a data flow architecture
 ### Data Flow and System Architecture
 The application uses the Post-Redirect-Get (PRG) design pattern for a stable and secure user experience.
 
-1.  File Upload (POST): When a user uploads a file, it is sent to the relevant endpoint. Flask secures the filename and writes the file to a temporary directory.
-2.  Triggering Analysis: The appropriate analysis functions are called based on the file type. For videos, "Key Frames" are identified and analyzed.
-3.  Core Analysis: Each image (or key frame) is processed by sub-functions that generate the heatmap, focus map, gaze plot, and CTA score.
-4.  Data Persistence and Redirection: All analysis results are stored in Flask's `session` object. The server then redirects the user to a new URL where the results will be displayed.
-5.  Displaying Results (GET): The user's browser makes a standard `GET` request to this new URL. The corresponding Flask route retrieves the data from the `session` and dynamically renders the HTML page.
+1.  File Upload (POST): When a user uploads a file, it is sent as `multipart/form-data` to the relevant `/upload_...` endpoint. Flask sanitizes the filename using `werkzeug.utils.secure_filename` and temporarily writes the file to the `/static/uploads` directory.
+
+2.  Triggering the Analysis Process:
+    * For Videos: The `process_video` function reads the video using `cv2.VideoCapture`. It calculates the absolute difference (`cv2.absdiff`) between frames at specific intervals (`SAMPLING_INTERVAL_SECONDS`). If this difference exceeds a certain threshold (`CHANGE_THRESHOLD`), the current frame is considered a "Key Frame".
+    * For Images: The `perform_analysis` function is called directly.
+
+3.  Core Analysis (perform_analysis): Each image (or key frame) is passed through the `generate_heatmap`, `generate_focus_map`, `generate_gaze_plot`, and `score_button_candidates` sub-functions within this central function. The output of each function (image files) is written to the `/static/outputs` directory.
+
+4.  Data Persistence and Redirection: All analysis results are collected in a Python dictionary and stored in Flask's `session` object. The server then redirects the user to a new URL for displaying the results using `redirect(url_for('...'))`.
+
+5.  Displaying Results (GET): The user's browser makes a standard `GET` request to this new URL. The corresponding Flask route retrieves the result data from the `session` and dynamically renders the HTML page using `render_template`.
 
 ## 3. Scientific Foundations of the Analyses
 
 The analysis modules are based on academic principles in computer vision and cognitive psychology.
 
-* Heatmap (Saliency): This module models the "bottom-up attention" mechanism of the human visual system, based on the foundational "Saliency-Based Visual Attention" model by **Itti, Koch, and Niebur (1998)**.
+* Heatmap (Saliency): This module models the "bottom-up attention" mechanism of the human visual system, based on the foundational "Saliency-Based Visual Attention" model by Itti, Koch, and Niebur (1998).
 * Gaze Plot: It simulates the "saccade" (rapid jumps) and "fixation" (short pauses) movements of the human eye by identifying high-density areas in the saliency map.
-* CTA Detection: It is based on Don Norman's concept of **"Affordance."** The design of an element should imply how it is to be used (e.g., that it is "clickable"). The algorithm identifies this affordance by combining semantic content, visual distinctiveness, and geometric form.
+* CTA Detection: It is based on Don Norman's concept of "Affordance." The design of an element should imply how it is to be used (e.g., that it is "clickable"). The algorithm identifies this affordance by combining semantic content, visual distinctiveness, and geometric form.
 
 ## 4. Installation and Setup
 
@@ -168,7 +180,7 @@ You must have Git, Docker, and Docker Compose installed to run the project.
 4.  Access:
     Once complete, access the web application at `http://localhost` or `http://your_server_ip_address`.
 
-## 5. Bibliography
+## 5. Bibliography and References
 
 The algorithms and methodologies used in this project are based on the following foundational scientific works and technologies.
 
