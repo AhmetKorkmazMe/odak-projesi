@@ -20,7 +20,7 @@ Odak Projesi, bir görsel veya video üzerindeki insan dikkatini bilimsel metotl
 
 <br>
 
-## 📋 İçindekiler
+## İçindekiler
 1. [Analiz Modülleri ve Sonuçların Yorumlanması](#1-analiz-modülleri-ve-sonuçların-yorumlanması)
 2. [Sistemin Teknik Mimarisi ve İşleyişi](#2-sistemin-teknik-mimarisi-ve-işleyişi)
 3. [Analizlerin Bilimsel Temelleri](#3-analizlerin-bilimsel-temelleri)
@@ -91,7 +91,7 @@ Uygulama, stabil ve güvenli bir kullanıcı deneyimi için _Post-Redirect-Get (
 ---
 
 ## 3. Analizlerin Bilimsel Temelleri
-* **Isı Haritası (Saliency):** Bu modül, insan görsel sisteminin "aşağıdan yukarıya dikkat" (bottom-up attention) mekanizmasını modeller. Temelleri, **Itti, Koch ve Niebur (1998)** tarafından geliştirilen "Saliency-Based Visual Attention" modeline dayanır.
+* **Isı Haritası (Saliency):** Bu modül, insan görsel sisteminin "aşağıdan yukarıya dikkat" (bottom-up attention) mekanizmasını modeller. Temelleri, **Itti, Koch ve Niebur (1988)** tarafından geliştirilen "Saliency-Based Visual Attention" modeline dayanır.
 * **Bakış Rotası (Gaze Plot):** İnsan gözünün "sakkad" (hızlı sıçramalar) ve "fiksasyon" (kısa duraklamalar) hareketlerini simüle eder.
 * **CTA Tespiti:** Tasarımcı Don Norman'ın **"Olanaklılık" (Affordance)** kavramına dayanır. Bir elementin tasarımı, onun nasıl kullanılacağını ima etmelidir.
 
