@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8">
+    <title>Odak Projesi · Yapay Zeka Destekli Dikkat Analizi</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="page-index">
+    
+    <div id="progressOverlay" class="progress-overlay" style="display: none;">
+        <div class="progress-content">
+            <h2 id="progressTitle">Analiz Yapılıyor...</h2>
+            <div class="progress mt-3 mb-2">
+                <div id="progressBar" class="progress-bar" role="progressbar" style="width: 0%;"></div>
+            </div>
+            <p id="progressText" style="font-size: 1.1rem;">İşlem başlatılıyor...</p>
+        </div>
+    </div>
+
+    <header class="site-header">
+        <div class="wrap">
+            <h1 class="brand">Odak Proje</h1>
+            <p class="subtitle">Yapay Zeka Destekli Görsel & Video Dikkat Analizi</p>
+        </div>
+    </header>
+
+    <main class="wrap">
+        <div class="upload-container">
+            <section class="upload-section">
+                <h2>Görsel Analizi</h2>
+                <p class="lead">Pazarlama materyalleriniz, web sitesi tasarımlarınız veya afişleriniz için dikkat analizi yapın.</p>
+                <form id="ImageForm" class="upload-card" action="/upload_image" method="post" enctype="multipart/form-data">
+                    <div id="dropzoneImage" class="dropzone" tabindex="0">
+                        <input id="fileInputImage" type="file" name="file" accept="image/jpeg,image/png,image/webp,image/bmp" required>
+                        <div class="dz-visual">
+                            <div class="dz-icon">🖼️</div>
+                            <div class="dz-text"><strong>Görseli sürükle</strong> ya da <span class="btn-link">dosya seç</span></div>
+                            <div class="dz-sub">JPG, PNG, WEBP, BMP</div>
+                        </div>
+                    </div>
+                </form>
+            </section>
+
+            <section class="upload-section">
+                <h2>Video Analizi</h2>
+                <p class="lead">Web sitesi veya uygulama kullanımını içeren ekran kayıtlarınızı analiz edin.</p>
+                <form id="VideoForm" class="upload-card" action="/upload_video" method="post" enctype="multipart/form-data">
+                    <div id="dropzoneVideo" class="dropzone" tabindex="0">
+                        <input id="fileInputVideo" type="file" name="file" accept="video/mp4,video/webm,video/quicktime" required>
+                        <div class="dz-visual">
+                            <div class="dz-icon">📹</div>
+                            <div class="dz-text"><strong>Videoyu sürükle</strong> ya da <span class="btn-link">dosya seç</span></div>
+                            <div class="dz-sub">MP4, WEBM, MOV</div>
+                        </div>
+                    </div>
+                </form>
+            </section>
+        </div>
+
+        <section class="info-section">
+            <div class="accordion">
+                <h3>Nasıl Çalışır?</h3>
+                <div class="accordion-item">
+                    <button class="accordion-header">Genel Bakış ve Teknoloji</button>
+                    <div class="accordion-content"><p>Odak Projesi, tasarımlarınızın kullanıcı dikkatini nasıl çektiğini analiz etmek için Bilgisayarlı Görü (Computer Vision) tekniklerini kullanır. Sistem, yüklenen görselleri veya videoları belirli kriterlere göre işleyerek somut ve eyleme geçirilebilir çıktılar üretir.</p></div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-header">Isı Haritası (Heatmap)</button>
+                    <div class="accordion-content"><p>Bu analiz, Belirginlik Tespiti (Saliency Detection) adı verilen yapay zeka tekniğini kullanır. Renk, kontrast ve parlaklık gibi görsel unsurları analiz ederek bir kullanıcının tasarıma ilk baktığında en çok nerelere odaklanacağını tahmin eder. Bu sayede, tasarımınızın veya websitenizin en dikkat çeken ve en sönük kalan alanlarını objektif verilerle görerek, "acaba bu bölüm fark edilir mi?" sorusuna net bir yanıt bulursunuz.</p></div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-header">Odak Haritası (Focus Map)</button>
+                    <div class="accordion-content"><p>Isı haritasındaki genel dikkat dağılımını analiz ederek, kullanıcının gözünün kilitleneceği birincil ve ikincil odak noktalarını belirler. Teknik olarak, en yüksek dikkat yoğunluğuna sahip bölgeler aydınlatılırken geri kalanlar karartılır. Bu analizle, ana ürününüzün, başlığınızın veya önemli bir mesajın, sayfa üzerindeki diğer elementler arasından sıyrılıp sıyrılamadığını kolayca test edebilirsiniz.</p></div>
+                </div>
+                 <div class="accordion-item">
+                    <button class="accordion-header">Bakış Rotası (Gaze Plot)</button>
+                    <div class="accordion-content"><p>Kullanıcının gözünün, odak noktaları arasında hangi sırayla gezineceğini tahmin eden bir simülasyondur. Dikkat seviyesi en yüksek noktalardan başlayarak olası bir okuma ve anlama rotası çizilir. Bu çıktı sayesinde tasarımınızdaki bilgi akışının ne kadar sezgisel olduğunu anlar, kullanıcıların istediğiniz sırada mı (örneğin, önce başlık, sonra buton) ilerlediğini görerek kullanıcı deneyimini (UX) iyileştirebilirsiniz.</p></div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-header">CTA Tespiti (Eyleme Çağrı Butonları)</button>
+                    <div class="accordion-content"><p>Bu analiz, butonları iki farklı teknikle arar: İlki, Optik Karakter Tanıma (OCR) ile buton üzerindeki metinleri okur. İkinci olarak da, Desen Tanıma (Pattern Recognition) ile alışveriş sepeti gibi yaygın ikonları tanır. Böylece, "Satın Al" veya "Üye Ol" gibi kritik butonlarınızın ne kadar görünür olduğunu ölçerek dönüşüm oranlarınızı artırmak için doğrudan optimizasyon yapma imkanı bulursunuz.</p></div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-header">Video Analizi</button>
+                    <div class="accordion-content"><p>Video dosyaları, ekranda önemli bir görsel değişiklik olduğunda (örneğin, bir menü açıldığında veya sayfa değiştiğinde) sistemin otomatik olarak yakaladığı Anahtar Kareler (Key Frames) üzerinden analiz edilir. Yakalanan her bir anahtar kare için yukarıdaki tüm analizler (Isı Haritası, CTA Tespiti vb.) ayrı ayrı uygulanır. Bu yöntemle, bir kullanıcı yolculuğunun kritik anlarında dikkatin nereye odaklandığını, arayüz değişikliklerinin kullanıcı davranışını nasıl etkilediğini ve hangi tasarımın zaman içinde daha başarılı olduğunu somut verilerle anlayabilirsiniz.</p></div>
+                </div>
+
+                <h3 class="mt-5">Gizlilik ve Veri Güvenliği</h3>
+                 <div class="accordion-item">
+                    <button class="accordion-header">Veri Saklama Politikası</button>
+                    <div class="accordion-content"><p>Yüklediğiniz hiçbir görsel veya video sunucuda kalıcı olarak saklanmaz. Sistem, verilerinizi sadece analiz süresince geçici olarak işlemek üzere tasarlanmıştır.</p></div>
+                </div>
+                 <div class="accordion-item">
+                    <button class="accordion-header">Otomatik Silme Süreci</button>
+                    <div class="accordion-content"><p>Analiz sonuçlarını görüntülediğiniz sayfadan ayrıldığınızda (örneğin "Yeni Analiz Yap" butonuna tıkladığınızda veya sekmeyi kapattığınızda), yüklediğiniz orijinal dosya ve üretilen tüm analiz sonuçları otomatik ve geri döndürülemez bir şekilde silinir.</p></div>
+                </div>
+                 <div class="accordion-item">
+                    <button class="accordion-header">Oturum Güvenliği</button>
+                    <div class="accordion-content"><p>Her analiz oturumu tamamen bağımsız ve size özeldir. Siz oturumu sonlandırdığınızda, o oturuma ait tüm izler de sunucudan kalıcı olarak yok olur.</p></div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="wrap">
+            <p>
+                Geliştirici: <a href="https://ahmetkorkmaz.me" target="_blank" rel="noopener noreferrer">Ahmet Korkmaz</a> | 
+                <a href="{{ url_for('documentation') }}">Teknik Dokümantasyon</a>
+                </p>
+        </div>
+    </footer>
+    <script>
+        const overlay = document.getElementById('progressOverlay');
+        const progressBar = document.getElementById('progressBar');
+        const progressText = document.getElementById('progressText');
+        const progressTitle = document.getElementById('progressTitle');
+        const dropzoneImage = document.getElementById('dropzoneImage');
+        const dropzoneVideo = document.getElementById('dropzoneVideo');
+
+        function simulateProgress(isVideo) {
+            overlay.style.display = 'flex';
+            dropzoneImage.classList.add('disabled');
+            dropzoneVideo.classList.add('disabled');
+
+            const steps = isVideo 
+                ? [ { percent: 10, text: "Video sunucuya yükleniyor..." }, { percent: 25, text: "Anahtar kareler ayıklanıyor..." }, { percent: 50, text: "Kareler analiz ediliyor..." }, { percent: 95, text: "Sonuçlar hazırlanıyor..." } ]
+                : [ { percent: 15, text: "Görsel sunucuya yükleniyor..." }, { percent: 40, text: "Dikkat haritaları oluşturuluyor..." }, { percent: 75, text: "CTA ve bakış rotası analizi yapılıyor..." }, { percent: 95, text: "Sonuçlar hazırlanıyor..." } ];
+            
+            let currentStep = 0;
+            function updateStep() {
+                if (currentStep < steps.length) {
+                    progressBar.style.width = steps[currentStep].percent + '%';
+                    progressText.textContent = steps[currentStep].text;
+                    currentStep++;
+                    setTimeout(updateStep, 1800);
+                }
+            }
+            updateStep();
+        }
+
+        function setupUploader(type, isVideo) {
+            const form = document.getElementById(`${type}Form`);
+            const dz = document.getElementById(`dropzone${type}`);
+            const fi = document.getElementById(`fileInput${type}`);
+
+            dz.addEventListener('click', () => fi.click());
+            dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('dragover'); });
+            dz.addEventListener('dragleave', () => dz.classList.remove('dragover'));
+            dz.addEventListener('drop', e => {
+                e.preventDefault();
+                dz.classList.remove('dragover');
+                if (e.dataTransfer.files.length) { fi.files = e.dataTransfer.files; handleFile(); }
+            });
+            fi.addEventListener('change', handleFile);
+
+            function handleFile() {
+                if (!fi.files[0]) return;
+                progressTitle.textContent = isVideo ? "Video Analiz Ediliyor..." : "Görsel Analiz Ediliyor...";
+                simulateProgress(isVideo);
+                form.submit();
+            }
+        }
+
+        setupUploader('Image', false);
+        setupUploader('Video', true);
+
+        const accordionHeaders = document.querySelectorAll(".accordion-header");
+        accordionHeaders.forEach(header => {
+            header.addEventListener("click", event => {
+                header.classList.toggle("active");
+                const accordionContent = header.nextElementSibling;
+                if (header.classList.contains("active")) {
+                    accordionContent.style.maxHeight = accordionContent.scrollHeight + "px";
+                    accordionContent.style.padding = "0 1.5rem";
+                    accordionContent.querySelector('p:last-child').style.paddingBottom = '1.5rem';
+                } else {
+                    accordionContent.style.maxHeight = 0;
+                    accordionContent.style.padding = "0 1.5rem";
+                }
+            });
+        });
+    </script>
+</body>
+</html>

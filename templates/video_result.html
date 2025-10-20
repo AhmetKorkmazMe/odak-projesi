@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <title>Video Analiz Sonuçları</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/simplelightbox/2.14.2/simple-lightbox.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="container result-page-body">
+    <div class="text-center result-header">
+        <h1>Video Analiz Raporu</h1>
+        <a href="{{ url_for('cleanup_and_home', filename=original_filename) }}" class="btn-secondary-outline mt-3">Yeni Analiz Yap</a>
+    </div>
+
+    {% if video_results %}
+    <section class="content-section">
+        <h2>Skorların Zaman Akışı</h2>
+        <a href="{{ timeline_chart_url }}" class="lightbox-trigger">
+            <img src="{{ timeline_chart_url }}" class="result-img">
+            <div class="overlay"><svg class="zoom-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M10 18a7.952 7.952 0 0 0 4.897-1.688l4.396 4.396 1.414-1.414-4.396-4.396A7.952 7.952 0 0 0 18 10c0-4.411-3.589-8-8-8s-8 3.589-8 8 3.589 8 8 8zm0-14c3.309 0 6 2.691 6 6s-2.691 6-6 6-6-2.691-6-6 2.691-6 6-6z"></path><path d="M11.5 9.5H10v-1.5a.5.5 0 0 0-1 0V9.5H7.5a.5.5 0 0 0 0 1H9v1.5a.5.5 0 0 0 1 0V10.5h1.5a.5.5 0 0 0 0-1z"></path></svg></div>
+        </a>
+    </section>
+
+    {% for result in video_results %}
+    <section class="keyframe-section content-section">
+        <h2>Anahtar Kare: {{ loop.index }} ({{ result.timestamp }} Saniye)</h2>
+        
+        <div class="mb-5 table-responsive">
+            <table class="table table-bordered table-striped align-middle">
+                <thead class="table-dark">
+                    <tr><th>Metrik</th><th>Skorunuz</th><th>Referans Aralık</th><th style="width: 50%;">Yorum ve Öneriler</th></tr>
+                </thead>
+                <tbody>
+                    {% for metric in result.interpretation_table %}
+                    <tr>
+                        <td><b>{{ metric.name }}</b></td>
+                        <td class="text-center"><span class="badge fs-5 rounded-pill {{ metric.badge_class }}">{{ metric.score }}</span></td>
+                        <td class="text-center">{{ metric.reference }}</td>
+                        <td>{{ metric.interpretation }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="image-gallery-{{ loop.index }}">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5>Orijinal Kare</h5>
+                    <a href="{{ result.urls.original }}" class="lightbox-trigger"><img src="{{ result.urls.original }}" class="result-img"><div class="overlay"><svg class="zoom-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M10 18a7.952 7.952 0 0 0 4.897-1.688l4.396 4.396 1.414-1.414-4.396-4.396A7.952 7.952 0 0 0 18 10c0-4.411-3.589-8-8-8s-8 3.589-8 8 3.589 8 8 8zm0-14c3.309 0 6 2.691 6 6s-2.691 6-6 6-6-2.691-6-6 2.691-6 6-6z"></path><path d="M11.5 9.5H10v-1.5a.5.5 0 0 0-1 0V9.5H7.5a.5.5 0 0 0 0 1H9v1.5a.5.5 0 0 0 1 0V10.5h1.5a.5.5 0 0 0 0-1z"></path></svg></div></a>
+                </div>
+                <div class="col-md-6">
+                    <h5>Grafikler</h5>
+                    <a href="{{ result.urls.bar_chart }}" class="lightbox-trigger"><img src="{{ result.urls.bar_chart }}" class="result-img"><div class="overlay"><svg class="zoom-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M10 18a7.952 7.952 0 0 0 4.897-1.688l4.396 4.396 1.414-1.414-4.396-4.396A7.952 7.952 0 0 0 18 10c0-4.411-3.589-8-8-8s-8 3.589-8 8 3.589 8 8 8zm0-14c3.309 0 6 2.691 6 6s-2.691 6-6 6-6-2.691-6-6 2.691-6 6-6z"></path><path d="M11.5 9.5H10v-1.5a.5.5 0 0 0-1 0V9.5H7.5a.5.5 0 0 0 0 1H9v1.5a.5.5 0 0 0 1 0V10.5h1.5a.5.5 0 0 0 0-1z"></path></svg></div></a>
+                    <a href="{{ result.urls.line_chart }}" class="lightbox-trigger"><img src="{{ result.urls.line_chart }}" class="result-img"><div class="overlay"><svg class="zoom-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M10 18a7.952 7.952 0 0 0 4.897-1.688l4.396 4.396 1.414-1.414-4.396-4.396A7.952 7.952 0 0 0 18 10c0-4.411-3.589-8-8-8s-8 3.589-8 8 3.589 8 8 8zm0-14c3.309 0 6 2.691 6 6s-2.691 6-6 6-6-2.691-6-6 2.691-6 6-6z"></path><path d="M11.5 9.5H10v-1.5a.5.5 0 0 0-1 0V9.5H7.5a.5.5 0 0 0 0 1H9v1.5a.5.5 0 0 0 1 0V10.5h1.5a.5.5 0 0 0 0-1z"></path></svg></div></a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3"><h5>Isı Haritası</h5><a href="{{ result.urls.heatmap }}" class="lightbox-trigger"><img src="{{ result.urls.heatmap }}" class="result-img"><div class="overlay"><svg class="zoom-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M10 18a7.952 7.952 0 0 0 4.897-1.688l4.396 4.396 1.414-1.414-4.396-4.396A7.952 7.952 0 0 0 18 10c0-4.411-3.589-8-8-8s-8 3.589-8 8 3.589 8 8 8zm0-14c3.309 0 6 2.691 6 6s-2.691 6-6 6-6-2.691-6-6 2.691-6 6-6z"></path><path d="M11.5 9.5H10v-1.5a.5.5 0 0 0-1 0V9.5H7.5a.5.5 0 0 0 0 1H9v1.5a.5.5 0 0 0 1 0V10.5h1.5a.5.5 0 0 0 0-1z"></path></svg></div></a></div>
+                <div class="col-md-3"><h5>Odak Haritası</h5><a href="{{ result.urls.focus }}" class="lightbox-trigger"><img src="{{ result.urls.focus }}" class="result-img"><div class="overlay"><svg class="zoom-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M10 18a7.952 7.952 0 0 0 4.897-1.688l4.396 4.396 1.414-1.414-4.396-4.396A7.952 7.952 0 0 0 18 10c0-4.411-3.589-8-8-8s-8 3.589-8 8 3.589 8 8 8zm0-14c3.309 0 6 2.691 6 6s-2.691 6-6 6-6-2.691-6-6 2.691-6 6-6z"></path><path d="M11.5 9.5H10v-1.5a.5.5 0 0 0-1 0V9.5H7.5a.5.5 0 0 0 0 1H9v1.5a.5.5 0 0 0 1 0V10.5h1.5a.5.5 0 0 0 0-1z"></path></svg></div></a></div>
+                <div class="col-md-3"><h5>Bakış Rotası</h5><a href="{{ result.urls.gaze }}" class="lightbox-trigger"><img src="{{ result.urls.gaze }}" class="result-img"><div class="overlay"><svg class="zoom-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M10 18a7.952 7.952 0 0 0 4.897-1.688l4.396 4.396 1.414-1.414-4.396-4.396A7.952 7.952 0 0 0 18 10c0-4.411-3.589-8-8-8s-8 3.589-8 8 3.589 8 8 8zm0-14c3.309 0 6 2.691 6 6s-2.691 6-6 6-6-2.691-6-6 2.691-6 6-6z"></path><path d="M11.5 9.5H10v-1.5a.5.5 0 0 0-1 0V9.5H7.5a.5.5 0 0 0 0 1H9v1.5a.5.5 0 0 0 1 0V10.5h1.5a.5.5 0 0 0 0-1z"></path></svg></div></a></div>
+                <div class="col-md-3"><h5>CTA Tespiti</h5><a href="{{ result.urls.cta }}" class="lightbox-trigger"><img src="{{ result.urls.cta }}" class="result-img"><div class="overlay"><svg class="zoom-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M10 18a7.952 7.952 0 0 0 4.897-1.688l4.396 4.396 1.414-1.414-4.396-4.396A7.952 7.952 0 0 0 18 10c0-4.411-3.589-8-8-8s-8 3.589-8 8 3.589 8 8 8zm0-14c3.309 0 6 2.691 6 6s-2.691 6-6 6-6-2.691-6-6 2.691-6 6-6z"></path><path d="M11.5 9.5H10v-1.5a.5.5 0 0 0-1 0V9.5H7.5a.5.5 0 0 0 0 1H9v1.5a.5.5 0 0 0 1 0V10.5h1.5a.5.5 0 0 0 0-1z"></path></svg></div></a></div>
+            </div>
+        </div>
+    </section>
+    {% endfor %}
+
+    {% else %}<div class="alert alert-warning mt-5" role="alert">Videoda analiz edilecek anlamlı bir değişiklik bulunamadı veya video işlenemedi.</div>{% endif %}
+    
+    <footer class="site-footer">
+        <div class="wrap">
+            <p>
+                Geliştirici: <a href="https://ahmetkorkmaz.me" target="_blank" rel="noopener noreferrer">Ahmet Korkmaz</a> | 
+                <a href="{{ url_for('documentation') }}">Teknik Dokümantasyon</a>
+            </p>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/simplelightbox/2.14.2/simple-lightbox.min.js"></script>
+    <script>
+        new SimpleLightbox('a.lightbox-trigger', {
+            closeText: '×',
+            navText: ['‹', '›'],
+        });
+    </script>
+</body>
+</html>
