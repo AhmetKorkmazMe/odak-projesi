@@ -26,13 +26,14 @@ Odak Projesi, bir görsel veya video üzerindeki insan dikkatini bilimsel metotl
 3. [Analizlerin Bilimsel Temelleri](#3-analizlerin-bilimsel-temelleri)
 4. [Kurulum ve Çalıştırma](#4-kurulum-ve-çalıştırma)
 5. [Kaynakça ve Referanslar](#5-kaynakça-ve-referanslar)
+6. [Geri Bildirim ve Katkıda Bulunma](#6-geri-bildirim-ve-katkıda-bulunma)
 
 ---
 
 ## 1. Analiz Modülleri ve Sonuçların Yorumlanması
 
-<details>
-<summary><strong>► Analizlerin detaylı yorum kılavuzunu görmek için buraya tıklayın</strong></summary>
+<details open>
+<summary><strong>► Analizlerin detaylı yorum kılavuzunu görmek için buraya tıklayın (varsayılan olarak açık)</strong></summary>
 <br>
 
 Uygulamanın sunduğu analizler ve bu sonuçların tasarımlarınızı iyileştirmek için nasıl yorumlanacağı aşağıda açıklanmıştır.
@@ -91,7 +92,7 @@ Uygulama, stabil ve güvenli bir kullanıcı deneyimi için _Post-Redirect-Get (
 ---
 
 ## 3. Analizlerin Bilimsel Temelleri
-* **Isı Haritası (Saliency):** Bu modül, insan görsel sisteminin "aşağıdan yukarıya dikkat" (bottom-up attention) mekanizmasını modeller. Temelleri, **Itti, Koch ve Niebur (1988)** tarafından geliştirilen "Saliency-Based Visual Attention" modeline dayanır.
+* **Isı Haritası (Saliency):** Bu modül, insan görsel sisteminin "aşağıdan yukarıya dikkat" (bottom-up attention) mekanizmasını modeller. Temelleri, **Itti, Koch ve Niebur (1998)** tarafından geliştirilen "Saliency-Based Visual Attention" modeline dayanır.
 * **Bakış Rotası (Gaze Plot):** İnsan gözünün "sakkad" (hızlı sıçramalar) ve "fiksasyon" (kısa duraklamalar) hareketlerini simüle eder.
 * **CTA Tespiti:** Tasarımcı Don Norman'ın **"Olanaklılık" (Affordance)** kavramına dayanır. Bir elementin tasarımı, onun nasıl kullanılacağını ima etmelidir.
 
@@ -123,6 +124,11 @@ Projeyi çalıştırmak için sisteminizde **Git**, **Docker** ve **Docker Compo
 * Nielsen, J. (2006). *F-Shaped Pattern For Reading Web Content.* Nielsen Norman Group.
 * Norman, D. (2013). *The Design of Everyday Things: Revised and Expanded Edition.* Basic Books.
 * Google Tesseract OCR Engine & OpenCV Library.
+
+---
+
+## 6. Geri Bildirim ve Katkıda Bulunma
+Proje ile ilgili bir hata bulursanız, bir öneriniz varsa veya bir soru sormak isterseniz, lütfen **[Issues](https://github.com/AhmetKorkmazMe/odak-projesi/issues)** sekmesini kullanmaktan çekinmeyin. Tüm geri bildirimler değerlidir.
 
 <br>
 
@@ -223,5 +229,8 @@ The algorithms and methodologies used in this project are based on the following
 * Nielsen, J. (2006). *F-Shaped Pattern For Reading Web Content.* Nielsen Norman Group.
 * Norman, D. (2013). *The Design of Everyday Things: Revised and Expanded Edition.* Basic Books.
 * Google Tesseract OCR Engine & OpenCV Library.
+
+## 6. Feedback and Contributions
+If you find a bug, have a suggestion, or want to ask a question about the project, please feel free to use the **[Issues](https://github.com/AhmetKorkmazMe/odak-projesi/issues)** tab. All feedback is valuable.
 
 </details>
