@@ -1,0 +1,17 @@
+# Python'un derlenmiş dosyaları
+__pycache__/
+*.pyc
+
+# Docker dosyaları
+.dockerignore
+.env
+
+# Kullanıcı tarafından yüklenen ve oluşturulan medya dosyaları
+# Bu klasörlerin içindeki hiçbir şey GitHub'a gönderilmeyecek
+static/focus/
+static/heatmaps/
+static/reports/
+static/uploads/
+
+# İşletim sistemi dosyaları
+.DS_Store
