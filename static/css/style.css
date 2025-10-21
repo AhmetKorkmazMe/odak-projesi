@@ -96,17 +96,16 @@ body > .sl-wrapper .sl-counter { color: #a0a0b0 !important; }
 
 /* --- Logo Stilleri --- */
 .site-header .brand {
-    font-size: 0; /* Metin başlığın yerini logo aldığı için */
+    font-size: 0;
     line-height: 0;
 }
-
 .site-header .brand a {
     display: inline-block;
 }
-
 .site-header .brand img {
-    height: 50px; /* Logonun yüksekliği, burayı değiştirerek boyutu ayarlayabilirsiniz */
-    width: auto;  /* Genişlik otomatik ayarlanacak */
+    height: 80px; /* <--- 1. DÜZELTME: Boyutu 80px yaptık */
+    width: auto;
     max-width: 100%;
     display: block;
+    filter: none !important; /* <--- 2. DÜZELTME: Renk filtresini iptal et (Garantilemek için !important) */
 }
