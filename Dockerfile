@@ -10,6 +10,7 @@ RUN apt-get update && apt-get install -y \
     libxrender1 \
     tesseract-ocr \
     tesseract-ocr-tur \
+    tesseract-ocr-eng \
     fonts-dejavu-core \
     && rm -rf /var/lib/apt/lists/*
 
