@@ -17,6 +17,7 @@
 ---
 
 Odak Projesi, bir görsel veya video üzerindeki insan dikkatini bilimsel metotlarla modelleyen ve analiz eden bir web uygulamasıdır. Tasarımcıların, pazarlama uzmanlarının ve araştırmacıların, oluşturdukları görsel materyallerin hangi bölgelerinin daha dikkat çekici olduğunu veriye dayalı olarak anlamalarını sağlar.
+Not: Proje kodları hazırlanırken Gemini 2.5 Pro'dan yararlanılmıştır.
 
 <br>
 
