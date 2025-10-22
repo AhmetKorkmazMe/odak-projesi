@@ -139,7 +139,7 @@ Proje ile ilgili bir hata bulursanız, bir öneriniz varsa veya bir soru sormak 
 
 # Odak Project: An AI-Powered Visual Attention Analysis Platform
 
-The Odak Project is a web application that models and analyzes human visual attention on an image or video using scientific methods. It enables designers, marketing experts, and researchers to understand, based on data, which parts of their visual materials are more engaging.
+The Odak Project is a web application that models and analyzes human visual attention on an image or video using scientific methods. It enables designers, marketing experts, and researchers to understand, based on data, which parts of their visual materials are more engaging.Note: Gemini 2.5 Pro was also used while preparing the project codes.
 
 ## 1. Analysis Modules & Interpretation of Results
 
